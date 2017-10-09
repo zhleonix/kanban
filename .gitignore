@@ -12,3 +12,4 @@ kanban
 kanban.iml
 rel/
 .tern-port
+.vscode/
