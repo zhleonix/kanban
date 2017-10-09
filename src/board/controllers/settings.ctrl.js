@@ -39,7 +39,7 @@
         $scope.update = function(stage) {
             $scope.saving = true;
             $scope.board.stale = true;
-            LabelService.update($scope.project_id, stage.name, getLabelString(stage), "#fff")
+            LabelService.update($scope.project_id, stage.name, getLabelString(stage), "#ffffff")
                 .then(function(res) {
                     $scope.saving = false;
                     stage.name = res.data.data.name;
@@ -75,7 +75,7 @@
             var name = getLabelString(stage);
             $scope.saving = true;
             $scope.board.stale = true;
-            return LabelService.create($scope.project_id, name, "#fff").then(function(res) {
+            return LabelService.create($scope.project_id, name, "#ffffff").then(function(res) {
                 $scope.saving = false;
                 stage.name = res.data.data.name;
                 stage.id   = res.data.data.name;
