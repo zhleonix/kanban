@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"gitlab.com/leanlabsio/kanban/models"
+	"gitlab.com/leanlabsio/kanban/modules/gitlab"
 	"gitlab.com/leanlabsio/kanban/modules/middleware"
 )
 
@@ -29,7 +30,13 @@ func ListStarredBoards(ctx *middleware.Context) {
 	boards, err := ctx.DataSource.ListStarredBoards()
 
 	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, &models.ResponseError{
+		// Due to lack of support of Starred Projects in old gitlab releases,
+		// We cannot simply return 401 but forward original response code to client to avoid jumping back to signin view
+		var httpStatus = http.StatusUnauthorized
+		if respErr, ok := err.(gitlab.ResponseError); ok {
+			httpStatus = respErr.StatusCode
+		}
+		ctx.JSON(httpStatus, &models.ResponseError{
 			Success: false,
 			Message: err.Error(),
 		})
